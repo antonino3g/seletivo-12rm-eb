@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -15,7 +16,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String infoText = "Informe seus dados";
+  bool _initCheckBoxDr = false;
+  bool _initCheckBoxMe = false;
+  bool _initCheckBoxLatuSensu = false;
+
+  String _infoText = "Informe seus dados";
 
   TextEditingController titleController = TextEditingController();
   TextEditingController dayController = TextEditingController();
@@ -41,10 +46,10 @@ class _HomeState extends State<Home> {
 
     setState(() {
       if (result <= 0) {
-        infoText =
+        _infoText =
             'Algo deu errado. Verifique seus dados ${result.toStringAsPrecision(3)}';
       } else {
-        infoText = 'Nota Preliminar: ${result}';
+        _infoText = 'Nota Preliminar: ${result}';
       }
     });
   }
@@ -73,11 +78,60 @@ class _HomeState extends State<Home> {
               size: 170,
               color: Colors.green,
             ),
-            _buildTextField('Título', titleController),
-            Divider(),
-            _buildTextField('Dias', dayController),
-            Divider(),
-            _buildTextField('Ensino Superior', graduacaoController),
+
+            CheckboxListTile(
+              title: Text(
+                'Possui Doutorado?',
+                style: TextStyle(fontSize: 20, color: Colors.green),
+              ),
+              subtitle: Text('Marque para SIM ou manter em branco para NÃO.',
+                  style: TextStyle(fontSize: 14)),
+              activeColor: Colors.green,
+              value: _initCheckBoxDr,
+              onChanged: (bool? value) {
+                setState(() {
+                  _initCheckBoxDr = value!;
+                });
+              },
+            ),
+
+            CheckboxListTile(
+              title: Text(
+                'Possui Mestrado?',
+                style: TextStyle(fontSize: 20, color: Colors.green),
+              ),
+              subtitle: Text('Marque para SIM ou manter em branco para NÃO.',
+                  style: TextStyle(fontSize: 14)),
+              activeColor: Colors.green,
+              value: _initCheckBoxLatuSensu,
+              onChanged: (bool? value) {
+                setState(() {
+                  _initCheckBoxLatuSensu = value!;
+                });
+              },
+            ),
+
+            CheckboxListTile(
+              title: Text(
+                'Possui Especialização?',
+                style: TextStyle(fontSize: 20, color: Colors.green),
+              ),
+              subtitle: Text('Marque para SIM ou manter em branco para NÃO.',
+                  style: TextStyle(fontSize: 14)),
+              activeColor: Colors.green,
+              value: _initCheckBoxMe,
+              onChanged: (bool? value) {
+                setState(() {
+                  _initCheckBoxMe = value!;
+                });
+              },
+            ),
+
+            // _buildTextField('Título', titleController),
+            // Divider(),
+            // _buildTextField('Dias', dayController),
+            // Divider(),
+            // _buildTextField('Ensino Superior', graduacaoController),
             Container(
               padding: const EdgeInsets.only(top: 10),
               height: 50,
@@ -95,7 +149,7 @@ class _HomeState extends State<Home> {
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Text(
-                infoText,
+                _infoText,
                 style: TextStyle(color: Colors.green, fontSize: 25),
                 textAlign: TextAlign.center,
               ),
